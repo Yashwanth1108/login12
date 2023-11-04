@@ -1,17 +1,35 @@
 document
-  .getElementById("signInForm")
+  .getElementById("signinForm")
   .addEventListener("submit", function (event) {
     event.preventDefault();
 
-    let firstName = document.getElementById("firstName").value;
-    let lastName = document.getElementById("lastName").value;
-    let password = document.getElementById("password").value;
+    var firstName = document.getElementById("firstName").value;
+    var lastName = document.getElementById("lastName").value;
+    var password = document.getElementById("password").value;
 
-    let object = {
+    var credentials = {
       firstName: firstName,
       lastName: lastName,
       password: password,
     };
 
-    console.log(object);
+    var storedCredentials = localStorage.getItem("credentials");
+    if (storedCredentials) {
+      storedCredentials = JSON.parse(storedCredentials);
+
+      if (
+        credentials.firstName === storedCredentials.firstName &&
+        credentials.lastName === storedCredentials.lastName &&
+        credentials.password === storedCredentials.password
+      ) {
+        alert("Login successful!");
+      } else {
+        alert("Invalid credentials. Please try again.");
+      }
+    } else {
+      localStorage.setItem("credentials", JSON.stringify(credentials));
+      alert("Account created. You can now sign in.");
+    }
+
+    document.getElementById("signinForm").reset();
   });
